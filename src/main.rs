@@ -1,8 +1,9 @@
-use memfd_exec::MemFdExecutable;
-
-const rwbinary: &[u8] = include_bytes!("../bin/binary"); 
+use memexec::memexec_exe;
 
 fn main() {
-    let exe = MemFdExecutable::new("payload", rwbinary.to_vec()).arg("--version");
-    exe.spawn().unwrap().wait().unwrap();
+    let RWBINARY: &[u8] = include_bytes!("../bin/binary"); 
+
+    unsafe {
+        memexec_exe(RWBINARY).unwrap();
+    }
 }
